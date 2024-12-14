@@ -3,65 +3,46 @@
 import sys
 
 import re
+from fractions import Fraction
 
-def safe(x):
-  if x is None:
-    raise Exception()
-  return x
 
-def readInput(fileName: str) -> list[tuple[int, int]]:
-  with open(fileName, "r") as f:
-    lines = [x.strip() for x in f.readlines()]
-    claws = []
-    for i in range(0, len(lines), 4):
-      a = safe(re.fullmatch('Button A: X\+(\d+), Y\+(\d+)', lines[i])).groups()
-      b = safe(re.fullmatch('Button B: X\+(\d+), Y\+(\d+)', lines[i + 1])).groups(1)
-      p = safe(re.fullmatch("Prize: X=(\d+), Y=(\d+)", lines[i+2])).groups()
-      claws.append(list([tuple(map(int, x)) for x in [a,b,p]]))
-    return claws
-  return []
+def readInput(fileName: str) -> list[list[int]]:
+    with open(fileName, "r") as f:
+        lines = [x for x in f.readlines()]
+        return [
+            list(map(int, re.findall("\\d+", "".join(lines[i : i + 3]))))
+            for i in range(0, len(lines), 4)
+        ]
+    return []
 
-def checkClaw(a, b, prize):
-  ax, ay = a
-  bx, by = b
-  px, py = prize
-  # px, py = px + 10000000000000, py + 10000000000000
 
-  aPresses, bPresses = {}, {}
+def checkClaw(ax, ay, bx, by, px, py):
+    af = Fraction((px * by) - (py * bx), (ax * by) - (ay * bx))
+    bf = Fraction(px - (ax * af.numerator), bx)
 
-  cx, cy, i = 0, 0, 0
-  while cx < px and cy < py:
-    cx, cy, i = cx + ax, cy + ay, i + 1
-    aPresses[(cx, cy)] = i
+    if af.denominator != 1 or bf.denominator != 1:
+        return 0
 
-  cx, cy, i = 0, 0, 0
-  while cx < px and cy < py:
-    cx, cy, i = cx + bx, cy + by, i + 1
-    bPresses[(cx, cy)] = i
-  
-  options = set()
+    return (af.numerator * 3) + bf.numerator
 
-  for c in aPresses:
-    cx, cy = c
-    if (px - cx, py - cy) in bPresses:
-      options.add((aPresses[c] * 3) + bPresses[(px - cx, py - cy)])
-  for c in bPresses:
-    cx, cy = c
-    if (px - cx, py - cy) in aPresses:
-      options.add((aPresses[(px - cx, py - cy)] * 3) + bPresses[c])
 
-  return min(options) if len(options) > 0 else 0
+def part1(input: list[list[int]]):
+    return sum([checkClaw(*claw) for claw in input])
 
-def part1(input):
-  return sum([checkClaw(*claw) for claw in input])
 
-def part2(input):
-  pass
+def part2(input: list[list[int]]):
+    return sum(
+        [
+            checkClaw(ax, ay, bx, by, px + 10000000000000, py + 10000000000000)
+            for ax, ay, bx, by, px, py in input
+        ]
+    )
+
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-      print("missing file name")
-      exit(1)
+        print("missing file name")
+        exit(1)
 
     input = readInput(sys.argv[1])
 

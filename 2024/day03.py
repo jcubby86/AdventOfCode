@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import re
+import sys
 
 def parseGroup(mul, x, y, do, dont):
   if mul != '':
@@ -12,7 +13,7 @@ def parseGroup(mul, x, y, do, dont):
 
 def readInput(fileName: str):
   with open(fileName, "r") as f:
-    return list(map(lambda x: parseGroup(*x), re.findall('(mul)\((\d{1,3}),(\d{1,3})\)|(do)\(\)|(don\'t)\(\)', f.read())))
+    return list(map(lambda x: parseGroup(*x), re.findall('(mul)\\((\\d{1,3}),(\\d{1,3})\\)|(do)\\(\\)|(don\'t)\\(\\)', f.read())))
 
   return []
 
@@ -32,7 +33,11 @@ def part2(input):
   return total
 
 if __name__ == "__main__":
-    input = readInput("input.txt")
+    if len(sys.argv) < 2:
+      print("missing file name")
+      exit(1)
+
+    input = readInput(sys.argv[1])
 
     print("part 1:", part1(input))
     print("part 2:", part2(input))
