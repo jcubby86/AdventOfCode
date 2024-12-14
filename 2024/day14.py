@@ -2,7 +2,6 @@
 
 import sys
 import re
-import time
 
 def readInput(fileName: str) -> list[list[int]]:
   with open(fileName, "r") as f:
@@ -26,7 +25,7 @@ def part1(input: list[list[int]]):
       elif r[1] != height // 2:
         quads[3] += 1
 
-  print(quads)
+  # print(quads)
   result = 1
   for q in quads:
     result *= q
@@ -35,7 +34,7 @@ def part1(input: list[list[int]]):
 def part2(input: list[list[int]]):
   width, height = 101, 103
 
-  for i in range(0,10000):
+  for i in range(0,1000000):
     robots = [((x + (vx * i)) % width, (y + (vy * i)) % height) for x, y, vx, vy in input]
 
     d= {}
@@ -46,15 +45,14 @@ def part2(input: list[list[int]]):
         d[r] = 1
 
     if (max(d.values())) == 1:
-      print(i)
-      for c in range(width):
-        for r in range(height):
-          if (r, c) in robots:
-            print('*', end='')
-          else:
-            print('.', end = '')
-        print()
-      break
+      # for c in range(width):
+      #   for r in range(height):
+      #     if (r, c) in robots:
+      #       print('*', end='')
+      #     else:
+      #       print('.', end = '')
+      #   print()
+      return i
 
 
 if __name__ == "__main__":
