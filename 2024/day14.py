@@ -35,30 +35,26 @@ def part1(input: list[list[int]]):
 def part2(input: list[list[int]]):
   width, height = 101, 103
 
-  odds = []
-  step = 51
-  i = 0
-  current = 30
-  while i < 1000:
-    robots = set([((x + (vx * current)) % width, (y + (vy * current)) % height) for x, y, vx, vy in input])
+  for i in range(0,10000):
+    robots = [((x + (vx * i)) % width, (y + (vy * i)) % height) for x, y, vx, vy in input]
 
-    print(i, current, step)
-    # time.sleep(1)
-    for c in range(width):
-      for r in range(height):
-        if (r, c) in robots:
-          print('*', end='')
-        else:
-          print('.', end = '')
-      print()
-    print()
-    
-    current += step
-    if i % 2 == 0: 
-      step += (i*2) + 1
-    else:
-      step -= (i*2) + 1
-    i += 1
+    d= {}
+    for r in robots:
+      if r in d:
+        d[r] += 1
+      else:
+        d[r] = 1
+
+    if (max(d.values())) == 1:
+      print(i)
+      for c in range(width):
+        for r in range(height):
+          if (r, c) in robots:
+            print('*', end='')
+          else:
+            print('.', end = '')
+        print()
+      break
 
 
 if __name__ == "__main__":
