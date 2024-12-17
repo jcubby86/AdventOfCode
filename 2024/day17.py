@@ -82,25 +82,28 @@ def part1(input):
     return registers["out"]
 
 
-def getOut(a: int) -> int:
-    partial = (a % 8) ^ 1
-    return ((partial ^ (a >> partial)) ^ 5) % 8
+def getOut(a: int, input) -> int:
+    input[0] = a
+    result =  part1(input)
+    # print(",".join(map(str, result)))
+    return result[0]
 
 
 def part2(input):
     program = input[3:]
 
-    quines = set()
-    quines.add(0)
+    aValues = set()
+    aValues.add(0)
     for num in program[::-1]:
-        newQuines = set()
-        for curr in quines:
+        newValues = set()
+        for curr in aValues:
             for i in range(8):
                 newVal = (curr << 3) + i
-                if getOut(newVal) == num:
-                    newQuines.add(newVal)
-        quines = newQuines
-    return min(quines)
+                if getOut(newVal, input) == num:
+                    newValues.add(newVal)
+        aValues = newValues
+        # print(quines)
+    return min(aValues)
 
 
 if __name__ == "__main__":
