@@ -11,7 +11,7 @@ def readInput(fileName: str):
   return []
 
 @cache
-def checkPattern(pattern: str):
+def checkPattern(pattern: str) -> int:
   if len(pattern) == 0:
     return 1
   total = 0
@@ -21,10 +21,10 @@ def checkPattern(pattern: str):
   return total
 
 
-def part1():
-  return sum(1 if checkPattern(p) > 0 else 0 for p in patterns)
+def part1() -> int:
+  return len([p for p in patterns if checkPattern(p) > 0])
 
-def part2():
+def part2() -> int:
   return sum(checkPattern(p) for p in patterns)
 
 if __name__ == "__main__":
