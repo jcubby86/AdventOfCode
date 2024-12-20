@@ -5,31 +5,29 @@ from collections import defaultdict
 import heapq
 
 
-def readInput(fileName: str):
+def readData(fileName: str):
     with open(fileName, "r") as f:
-        return [tuple(map(int, x.split(','))) for x in f.readlines()]
+        return [tuple(map(int, x.split(","))) for x in f.readlines()]
     return []
 
 
 def part1(size, fallen, bytePositions):
-    fallen = set([b for b in bytePositions[:fallen + 1]])
+    fallen = set([b for b in bytePositions[: fallen + 1]])
     # print(fallen)
     adjList = defaultdict(list)
     for r in range(size):
         for c in range(size):
-            if r > 0 and (r-1, c) not in fallen:
-                adjList[(r, c)].append((r-1,c))
-            if r < size-1 and (r+1, c) not in fallen:
-                adjList[(r, c)].append((r+1,c))
-            if c > 0 and (r, c-1) not in fallen:
-                adjList[(r, c)].append((r,c-1))
-            if c < size-1 and (r, c+1) not in fallen:
-                adjList[(r, c)].append((r,c+1))
-
-
+            if r > 0 and (r - 1, c) not in fallen:
+                adjList[(r, c)].append((r - 1, c))
+            if r < size - 1 and (r + 1, c) not in fallen:
+                adjList[(r, c)].append((r + 1, c))
+            if c > 0 and (r, c - 1) not in fallen:
+                adjList[(r, c)].append((r, c - 1))
+            if c < size - 1 and (r, c + 1) not in fallen:
+                adjList[(r, c)].append((r, c + 1))
 
     distances = defaultdict(lambda: size**size)
-    distances[(0,0)] = 0
+    distances[(0, 0)] = 0
     visited = set()
     heap = []
 
@@ -45,7 +43,8 @@ def part1(size, fallen, bytePositions):
                 distances[neighbor] = tentative_distance
             heapq.heappush(heap, (distances[neighbor], neighbor))
 
-    return distances[(size-1, size-1)]
+    return distances[(size - 1, size - 1)]
+
 
 def part2(size, fallen, bytePositions):
     for i in range(fallen, len(bytePositions)):
@@ -58,9 +57,9 @@ def part2(size, fallen, bytePositions):
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("missing file name")
-        exit(1)
+        sys.exit(1)
 
-    input = readInput(sys.argv[1])
+    data = readData(sys.argv[1])
 
-    print("part 1:", part1(71, 1024, input))
-    print("part 2:", part2(71, 1024, input))
+    print("part 1:", part1(71, 1024, data))
+    print("part 2:", part2(71, 1024, data))

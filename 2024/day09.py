@@ -2,20 +2,21 @@
 
 import sys
 
-def readInput(fileName: str) -> str:
+
+def readData(fileName: str) -> str:
     with open(fileName, "r") as f:
         return f.read().strip()
 
     return ""
 
 
-def part1(input: str):
-    arr = []
-    for i in range(len(input)):
+def part1(data: str):
+    arr: list[str | int] = []
+    for i in range(len(data)):
         if i % 2 == 0:
-            arr += [i // 2] * int(input[i])
+            arr += [i // 2] * int(data[i])
         else:
-            arr += ["."] * int(input[i])
+            arr += ["."] * int(data[i])
 
     l, r = 0, len(arr) - 1
 
@@ -31,13 +32,13 @@ def part1(input: str):
     return sum([i * x for i, x in enumerate(arr) if isinstance(x, int)])
 
 
-def part2(input: str):
+def part2(data: str):
     arr: list[tuple[int, int]] = []
-    for i in range(len(input)):
+    for i in range(len(data)):
         if i % 2 == 0:
-            arr.append((i//2, int(input[i])))
+            arr.append((i // 2, int(data[i])))
         else:
-            arr.append((-1, int(input[i])))
+            arr.append((-1, int(data[i])))
 
     r = len(arr) - 1
     while r > 0:
@@ -45,7 +46,10 @@ def part2(input: str):
 
         l = 0
         while l < r:
-            free, freeSize, = arr[l]
+            (
+                free,
+                freeSize,
+            ) = arr[l]
             block, blockSize = arr[r]
             if block == -1:
                 break
@@ -57,7 +61,7 @@ def part2(input: str):
             elif blockSize < freeSize:
                 arr[r] = (-1, blockSize)
                 arr[l] = (block, blockSize)
-                arr.insert(l+1, (-1, freeSize - blockSize))
+                arr.insert(l + 1, (-1, freeSize - blockSize))
                 break
             else:
                 l += 1
@@ -69,9 +73,9 @@ def part2(input: str):
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("missing file name")
-        exit(1)
+        sys.exit(1)
 
-    input = readInput(sys.argv[1])
+    data = readData(sys.argv[1])
 
-    print("part 1:", part1(input))
-    print("part 2:", part2(input))
+    print("part 1:", part1(data))
+    print("part 2:", part2(data))

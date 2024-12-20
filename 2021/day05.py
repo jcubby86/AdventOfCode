@@ -1,10 +1,19 @@
-def parse(file):
-    f = open('input/{}.txt'.format(file), 'r')
-    data = [x.strip() for x in f.readlines()]
-    m = [0]
-    lines = [[[findMax(int(z), m) for z in y.split(',')] for y in x.split(' -> ')] for x in data]
+#!/usr/bin/env python3
 
-    return lines, m[0]
+import sys
+
+
+def readData(fileName: str):
+    with open(fileName, "r") as f:
+        data = [x.strip() for x in f.readlines()]
+        m = [0]
+        lines = [
+            [[findMax(int(z), m) for z in y.split(",")] for y in x.split(" -> ")]
+            for x in data
+        ]
+
+        return lines, m[0]
+    return []
 
 
 def findMax(z, m):
@@ -17,7 +26,7 @@ def printGrid(grid):
     points = 0
     for row in grid:
         for val in row:
-            print('.' if val == 0 else val, end='')
+            print("." if val == 0 else val, end="")
             if val >= 2:
                 points += 1
         print()
@@ -27,7 +36,7 @@ def printGrid(grid):
 def part1(data):
     lines = data[0]
     m = data[1]
-    grid = [[0 for i in range(m+1)] for j in range(m+1)]
+    grid = [[0 for i in range(m + 1)] for j in range(m + 1)]
     for line in lines:
         x1 = line[0][0]
         y1 = line[0][1]
@@ -58,7 +67,12 @@ def part2(data):
     pass
 
 
-if __name__ == '__main__':
-    d = parse('day5')
-    part1(d)
-    part2(d)
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print("missing file name")
+        sys.exit(1)
+
+    data = readData(sys.argv[1])
+
+    print("part 1:", part1(data))
+    print("part 2:", part2(data))

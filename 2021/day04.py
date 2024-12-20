@@ -1,17 +1,22 @@
-def parse(file):
-    f = open('input/{}4.txt'.format(file), 'r')
-    data = [x.strip() for x in f.readlines()]
+#!/usr/bin/env python3
 
-    turns = [int(x) for x in data[0].split(',')]
-    boards = []
+import sys
 
-    for i in range(2, len(data), 6):
-        board = []
-        for j in range(i, i+5):
-            board.append([int(x) for x in data[j].split()])
-        boards.append(board)
 
-    return turns, boards
+def readData(fileName: str):
+    with open(fileName, "r") as f:
+        data = [x.strip() for x in f.readlines()]
+        turns = [int(x) for x in data[0].split(",")]
+        boards = []
+
+        for i in range(2, len(data), 6):
+            board = []
+            for j in range(i, i + 5):
+                board.append([int(x) for x in data[j].split()])
+            boards.append(board)
+
+        return turns, boards
+    return []
 
 
 def part1(data):
@@ -70,7 +75,12 @@ def countBoard(board):
     return sum
 
 
-if __name__ == '__main__':
-    d = parse('day')
-    # part1(d)
-    part2(d)
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print("missing file name")
+        sys.exit(1)
+
+    data = readData(sys.argv[1])
+
+    print("part 1:", part1(data))
+    print("part 2:", part2(data))

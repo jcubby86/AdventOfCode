@@ -18,7 +18,7 @@ RIGHT = ">"
 dirs = {LEFT: (0, -1), RIGHT: (0, 1), UP: (-1, 0), DOWN: (1, 0)}
 
 
-def readInput(fileName: str) -> tuple[list[list[str]], list[str]]:
+def readData(fileName: str) -> tuple[list[list[str]], list[str]]:
     with open(fileName, "r") as f:
         warehouse, moves = f.read().split("\n\n")
     return [list(line) for line in warehouse.split("\n")], [
@@ -136,7 +136,7 @@ def part2(original: list[list[str]], moves: list[str]) -> int:
         # print(move)
         dir = dirs[move]
         r, c = robot[0] + dir[0], robot[1] + dir[1]
-        temp = [list(''.join(row)) for row in warehouse]
+        temp = [list("".join(row)) for row in warehouse]
         if tryMoveBox(r, c, move):
             warehouse[robot[0]][robot[1]] = EMPTY
             robot = (r, c)
@@ -160,9 +160,9 @@ def part2(original: list[list[str]], moves: list[str]) -> int:
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("missing file name")
-        exit(1)
+        sys.exit(1)
 
-    input = readInput(sys.argv[1])
+    data = readData(sys.argv[1])
 
-    print("part 1:", part1(*input))
-    print("part 2:", part2(*input))
+    print("part 1:", part1(*data))
+    print("part 2:", part2(*data))

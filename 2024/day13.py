@@ -6,7 +6,7 @@ import re
 from fractions import Fraction
 
 
-def readInput(fileName: str) -> list[list[int]]:
+def readData(fileName: str) -> list[list[int]]:
     with open(fileName, "r") as f:
         lines = [x for x in f.readlines()]
         return [
@@ -26,15 +26,15 @@ def checkClaw(ax, ay, bx, by, px, py):
     return (af.numerator * 3) + bf.numerator
 
 
-def part1(input: list[list[int]]):
-    return sum([checkClaw(*claw) for claw in input])
+def part1(data: list[list[int]]):
+    return sum([checkClaw(*claw) for claw in data])
 
 
-def part2(input: list[list[int]]):
+def part2(data: list[list[int]]):
     return sum(
         [
             checkClaw(ax, ay, bx, by, px + 10000000000000, py + 10000000000000)
-            for ax, ay, bx, by, px, py in input
+            for ax, ay, bx, by, px, py in data
         ]
     )
 
@@ -42,9 +42,9 @@ def part2(input: list[list[int]]):
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("missing file name")
-        exit(1)
+        sys.exit(1)
 
-    input = readInput(sys.argv[1])
+    data = readData(sys.argv[1])
 
-    print("part 1:", part1(input))
-    print("part 2:", part2(input))
+    print("part 1:", part1(data))
+    print("part 2:", part2(data))

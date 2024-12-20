@@ -62,16 +62,16 @@ def cdv(registers, operand):
     nextInstruction(registers)
 
 
-def readInput(fileName: str):
+def readData(fileName: str):
     with open(fileName, "r") as f:
         return list(map(int, re.findall("-?\\d+", f.read())))
     return []
 
 
-def part1(input):
+def part1(data):
     operations = [adv, bxl, bst, jnz, bxc, out, bdv, cdv]
-    registers = {"a": input[0], "b": input[1], "c": input[2], "ip": 0, "out": []}
-    program = input[3:]
+    registers = {"a": data[0], "b": data[1], "c": data[2], "ip": 0, "out": []}
+    program = data[3:]
 
     while registers["ip"] < len(program):
         operation = operations[program[registers["ip"]]]
@@ -82,15 +82,15 @@ def part1(input):
     return registers["out"]
 
 
-def getOut(a: int, input) -> int:
-    input[0] = a
-    result =  part1(input)
+def getOut(a: int, data) -> int:
+    data[0] = a
+    result = part1(data)
     # print(",".join(map(str, result)))
     return result[0]
 
 
-def part2(input):
-    program = input[3:]
+def part2(data):
+    program = data[3:]
 
     aValues = set()
     aValues.add(0)
@@ -99,7 +99,7 @@ def part2(input):
         for curr in aValues:
             for i in range(8):
                 newVal = (curr << 3) + i
-                if getOut(newVal, input) == num:
+                if getOut(newVal, data) == num:
                     newValues.add(newVal)
         aValues = newValues
         # print(quines)
@@ -109,9 +109,9 @@ def part2(input):
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("missing file name")
-        exit(1)
+        sys.exit(1)
 
-    input = readInput(sys.argv[1])
+    data = readData(sys.argv[1])
 
-    print("part 1:", ",".join(map(str, part1(input))))
-    print("part 2:", part2(input))
+    print("part 1:", ",".join(map(str, part1(data))))
+    print("part 2:", part2(data))

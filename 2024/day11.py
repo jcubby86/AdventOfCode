@@ -4,7 +4,7 @@ import math
 import sys
 
 
-def readInput(fileName: str) -> list[int]:
+def readData(fileName: str) -> list[int]:
     with open(fileName, "r") as f:
         return list(map(int, f.read().strip().split(" ")))
     return []
@@ -25,8 +25,8 @@ def rules(number):
     return [number * 2024]
 
 
-def part1(input: list[int], count: int):
-    arr = [x for x in input]
+def part1(data: list[int], count: int):
+    arr = [x for x in data]
     for i in range(count):
         res = []
         for num in arr:
@@ -37,7 +37,7 @@ def part1(input: list[int], count: int):
     return len(arr)
 
 
-def part2(input: list[int], count: int):
+def part2(data: list[int], count: int):
 
     def calc(x, l):
         s = str(x)
@@ -54,17 +54,17 @@ def part2(input: list[int], count: int):
             mem[l][x] = calc(x * 2024, l - 1)
         return mem[l][x]
 
-    mem = [{} for i in range(count + 1)]
+    mem: list[dict] = [{} for i in range(count + 1)]
 
-    return sum([calc(x, count) for x in input])
+    return sum([calc(x, count) for x in data])
 
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("missing arg")
-        exit(1)
+        sys.exit(1)
 
-    input = readInput(sys.argv[1])
+    data = readData(sys.argv[1])
 
-    print("part 1:", part1(input, 25))
-    print("part 2:", part2(input, 75))
+    print("part 1:", part1(data, 25))
+    print("part 2:", part2(data, 75))
