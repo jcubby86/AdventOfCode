@@ -43,14 +43,14 @@ def getBitValues(value: int) -> str:
 
 
 def part1(initialValues: list, rules: list) -> int:
-    values = {k: int(v) for k, v in initialValues} 
+    values = {k: int(v) for k, v in initialValues}
     executeRules(values, deque(rules))
     return getIntValue(values, "z")
 
 
 def part2(initialValues: list, rules: list):
     ruleDict = {x[4]: x for x in rules}
-    values = {k: int(v) for k, v in initialValues} 
+    values = {k: int(v) for k, v in initialValues}
 
     @cache
     def getDependencies(key: str) -> set[str]:
@@ -65,7 +65,7 @@ def part2(initialValues: list, rules: list):
         d.update(getDependencies(rule[2]))
 
         return d
-    
+
     def executeRule(key: str):
         r = ruleDict[key]
 
@@ -79,8 +79,6 @@ def part2(initialValues: list, rules: list):
             values[r[4]] = values[r[0]] | values[r[2]]
         elif r[1] == "XOR":
             values[r[4]] = values[r[0]] ^ values[r[2]]
-    
-
 
     x = getIntValue(values, "x")
     y = getIntValue(values, "y")
@@ -97,7 +95,6 @@ def part2(initialValues: list, rules: list):
             print(getDependencies(key).difference(getDependencies(f"z{(i-1):02d}")))
     # from here it's a manual process, but this helps narrow down the wires that could be crossed.
     # make sure that z00 is the XOR of (x00 XOR y00) and the wire that's "carrying" the 1 from before
-
 
     return expected
 

@@ -51,7 +51,7 @@ def part2(data: list):
 
     maxSize = max(map(len, groups))
     bestGroup = list(filter(lambda x: len(x) == maxSize, groups))
-    return ','.join(sorted(bestGroup[0]))
+    return ",".join(sorted(bestGroup[0]))
 
 
 if __name__ == "__main__":
