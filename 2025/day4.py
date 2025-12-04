@@ -1,6 +1,6 @@
 import logging
 import sys
-from util import parse_args, read_lines
+from util import parse_args, read_lines, track_time
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -62,5 +62,5 @@ if __name__ == "__main__":
     data = read_lines(filename)
     data = parse_input(data)
     logger.debug(f"Input data: {data}")
-    logger.info(f"part 1: {part_1(data)}")
-    logger.info(f"part 2: {part_2(data)}")
+    logger.info(f"part 1: {track_time(part_1)(data)}")
+    logger.info(f"part 2: {track_time(part_2)(data)}")
